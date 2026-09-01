@@ -1,25 +1,16 @@
+import axios from 'axios';
+
 export const loginService = {
   login: async () => {
+    console.log("📌 Calling Golang Login API...");
+    
     try {
-      console.log('📌 Calling Login API Route...');
-
-      const response = await fetch('/api/login', {
-        method: 'POST',
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('✅ Login Response:', data);
-      return data;
+      const response = await axios.post('/api/login');
+      console.log("✅ Login Response:", response.data);
+      return response.data;
     } catch (error: any) {
-      console.error('❌ Login Error:', {
-        message: error.message,
-        error: error,
-      });
-      throw error;
+      console.error("❌ Login Error:", error.response?.status || error.message);
+      throw new Error(`HTTP ${error.response?.status || 'Unknown'}`);
     }
-  },
+  }
 };

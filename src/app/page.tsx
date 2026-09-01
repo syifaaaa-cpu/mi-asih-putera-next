@@ -19,21 +19,32 @@ import { loginService } from "../services/loginService";
 export default function Home() {
   useEffect(() => {
     loginService.login();
-  }, []);
+  }, []); 
+
+  // Tambahkan fungsi untuk menangani perpindahan section
+  const handleNavigateSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <main className="min-h-screen bg-white">
       <TopBar />
-      <Navbar />
-      <HeroSection />
+      {/* Kirim fungsinya ke Navbar */}
+      <Navbar onNavigateSection={handleNavigateSection} />
+      
+      {/* Pastikan setiap section punya ID yang sesuai */}
+      <div id="hero"><HeroSection /></div>
       <StatsBar />
-      <FeaturedProgramsSection />
-      <SixPillarsSection />
-      <KeyOutcomesSection />
-      <StudentGrowthSection />
-      <LatestNewsSection />
-      <TestimonialsAndFaqSection />
-      <FooterSection />
+      <div id="programs"><FeaturedProgramsSection /></div>
+      <div id="pillars"><SixPillarsSection /></div>
+      <div id="outcomes"><KeyOutcomesSection /></div>
+      <div id="growth"><StudentGrowthSection /></div>
+      <div id="berita"><LatestNewsSection /></div>
+      <div id="faq"><TestimonialsAndFaqSection /></div>
+      <div id="footer"><FooterSection /></div>
     </main>
   );
 }

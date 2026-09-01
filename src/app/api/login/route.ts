@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import FormData from "form-data";
+import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,54 +8,55 @@ export async function POST(request: NextRequest) {
     const password = process.env.CMS_PASSWORD;
     const siteId = process.env.CMS_SITE_ID;
 
-    console.log("🔐 DEBUG - Env Variables:", {
-      username,
-      password: password ? password : "KOSONG",
-      siteId,
-      apiUrl,
-    });
+    // Cek Variabel ENV
+    console.log("🔍 Cek Variabel ENV:", { username, password, siteId });
 
-    const form = new FormData();
-    form.append("Username", username || "");
-    form.append("Password", password || "");
-    form.append("SiteId", siteId || "");
+    const formData = new FormData();
+    formData.append("Username", username || "");
+    formData.append("Password", password || "");
+    formData.append("SiteId", siteId || "");
 
-    console.log("🔐 Server Login Request:", {
-      apiUrl,
-      endpoint: "api/Auth/Login",
+    // Cek isi data yang akan dikirim
+    console.log("📤 Mengirim ke Go Fiber:", {
+      url: `${apiUrl}api/Auth/Login`,
       username,
-      siteId,
-      bodyType: "form-data",
+      password: password ? "ADA_PASSWORD" : "KOSONG",
+      siteId
     });
 
     const response = await fetch(`${apiUrl}api/Auth/Login`, {
       method: "POST",
-      headers: form.getHeaders(),
-      body: form,
+      body: formData,
     });
 
+    const responseText = await response.text();
+    console.log("📥 Respon dari Go Fiber:", response.status, responseText);
+
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error("❌ Login Error - Status:", response.status);
-      console.error("❌ Backend Response:", errorData);
       return NextResponse.json(
-        {
-          error: `Login failed with status ${response.status}`,
-          details: errorData,
-        },
-        { status: response.status },
+        { error: `Backend error ${response.status}`, details: responseText },
+        { status: response.status }
       );
     }
 
-    const data = await response.json();
-    console.log("✅ Login Success:", {
-      userId: data?.userId,
-      authToken: data?.authToken ? "***" : undefined,
-    });
+    const data = JSON.parse(responseText);
+
+    // Ambil token dari respons backend Go Fiber dan simpan ke Cookies
+    const token = data?.Data?.Token;
+    if (token) {
+      const cookieStore = await cookies();
+      cookieStore.set({
+        name: "token",
+        value: token,
+        httpOnly: true,
+        path: "/",
+        maxAge: 60 * 60 * 24, // Berlaku 1 hari
+      });
+    }
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("❌ Login Error:", error);
+    console.error("❌ Route Handler Error:", error);
     return NextResponse.json({ error: "Failed to login" }, { status: 500 });
   }
 }
