@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TopBar } from "../components/TopBar";
 import Navbar from "../components/Navbar";
 import { HeroSection } from "../components/HeroSection";
@@ -17,9 +17,20 @@ import FooterSection from "../components/FooterSection";
 import { loginService } from "../services/loginService";
 
 export default function Home() {
+  const [authReady, setAuthReady] = useState(false);
+
   useEffect(() => {
-    loginService.login();
-  }, []); 
+    loginService
+      .login()
+      .catch((error: unknown) => {
+        console.error("Login failed:", error);
+      })
+      .finally(() => setAuthReady(true));
+  }, []);
+
+  if (!authReady) {
+    return <main className="min-h-screen bg-white" />;
+  }
 
   // Tambahkan fungsi untuk menangani perpindahan section
   const handleNavigateSection = (sectionId: string) => {
@@ -62,17 +73,46 @@ export default function Home() {
       <TopBar />
       {/* Kirim fungsinya ke Navbar */}
       <Navbar onNavigateSection={handleNavigateSection} />
-      
+
       {/* Pastikan setiap section punya ID yang sesuai */}
-      <div id="hero"><HeroSection onOpenVisit={handleOpenVisit} onOpenConsultation={handleOpenConsultation} onOpenPPDB={handleOpenPPDB} /></div>
+      <div id="hero">
+        <HeroSection
+          onOpenVisit={handleOpenVisit}
+          onOpenConsultation={handleOpenConsultation}
+          onOpenPPDB={handleOpenPPDB}
+        />
+      </div>
       <StatsBar />
-      <div id="programs"><FeaturedProgramsSection onViewAllPrograms={handleViewAllPrograms} /></div>
-      <div id="pillars"><SixPillarsSection /></div>
-      <div id="outcomes"><KeyOutcomesSection /></div>
-      <div id="growth"><StudentGrowthSection onOpenStories={handleOpenVisit} onOpenConsultation={handleOpenConsultation} /></div>
-      <div id="berita"><LatestNewsSection /></div>
-      <div id="faq"><TestimonialsAndFaqSection onOpenAllTestimonials={handleOpenAllTestimonials} onOpenAllFaqs={handleOpenAllFaqs} /></div>
-      <div id="footer"><FooterSection onNavigateSection={handleNavigateSection} onOpenPrivacy={handleOpenPrivacy} /></div>
+      <div id="programs">
+        <FeaturedProgramsSection onViewAllPrograms={handleViewAllPrograms} />
+      </div>
+      <div id="pillars">
+        <SixPillarsSection />
+      </div>
+      <div id="outcomes">
+        <KeyOutcomesSection />
+      </div>
+      <div id="growth">
+        <StudentGrowthSection
+          onOpenStories={handleOpenVisit}
+          onOpenConsultation={handleOpenConsultation}
+        />
+      </div>
+      <div id="berita">
+        <LatestNewsSection />
+      </div>
+      <div id="faq">
+        <TestimonialsAndFaqSection
+          onOpenAllTestimonials={handleOpenAllTestimonials}
+          onOpenAllFaqs={handleOpenAllFaqs}
+        />
+      </div>
+      <div id="footer">
+        <FooterSection
+          onNavigateSection={handleNavigateSection}
+          onOpenPrivacy={handleOpenPrivacy}
+        />
+      </div>
     </main>
   );
 }

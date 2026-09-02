@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import axios from "axios";
+import { newsService } from "../services/newsService"; 
 
 import {
   Calendar,
@@ -29,84 +30,18 @@ export const LatestNewsSection: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
-    // Memanggil API route proxy Next.js (/api/news)
-    axios.get("/api/news")
-      .then((res) => {
-        const response = res.data;
-        const rawData =
-          response.Data?.Content || response.data || (Array.isArray(response) ? response : []);
-
-        if (rawData.length > 0) {
-          const baseApiUrl =
-            process.env.NEXT_PUBLIC_API_URL || "http://localhost:7000";
-
-          const mappedNews: NewsItem[] = rawData.map(
-            (item: any, index: number) => {
-              const imgName = item.SignedThumbnail || item.Thumbnail;
-              
-              let finalImage = "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800";
-              if (imgName) {
-                if (imgName.startsWith("http")) {
-                  finalImage = imgName;
-                } else {
-                  const cleanFilename = imgName.endsWith(".enc") ? imgName.replace(".enc", "") : imgName;
-                  finalImage = `${baseApiUrl}/resources/asset/${cleanFilename}`;
-                }
-              }
-
-              const cleanContent = item.Content ? item.Content.replace(/<[^>]*>?/gm, "") : "Ringkasan berita tidak tersedia.";
-
-              // Mendeteksi status pin/featured dari database (mendukung berbagai variasi penamaan kolom backend)
-              const isPinned = Boolean(
-                item.IsPin === true || 
-                item.IsPin === 1 || 
-                item.Pin === true || 
-                item.Pin === 1 ||
-                item.IsFeatured === true ||
-                item.IsFeatured === 1 ||
-                item.StatusPin === true ||
-                item.StatusPin === 1
-              );
-
-              return {
-                id: item.ContentId || item.id || index + 1,
-                title: item.Title || item.title || "Tanpa Judul",
-                category: item.Category || item.category || "Berita",
-                date: item.TglPublish || item.date
-                  ? new Date(item.TglPublish || item.date).toLocaleDateString("id-ID", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })
-                  : "01 Sep 2026",
-                author: item.Author || item.author || "Admin",
-                readTime: "3 menit baca",
-                image: finalImage,
-                summary: cleanContent,
-                fullContent: [cleanContent],
-                // Berita akan otomatis jadi utama (featured) jika di-pin oleh sistem, atau menjadi urutan pertama jika belum ada yang di-pin
-                featured: isPinned,
-              };
-            },
-          );
-
-          // Urutkan: Letakkan berita yang statusnya featured/pinned di posisi paling atas (index 0)
-          mappedNews.sort((a: any, b: any) => (b.featured === true ? 1 : 0) - (a.featured === true ? 1 : 0));
-
-          // Jika tidak satupun yang di-pin, jadikan item pertama sebagai default featured
-          if (!mappedNews.some(item => item.featured) && mappedNews.length > 0) {
-            mappedNews[0].featured = true;
-          }
-
-          setNewsData(mappedNews);
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error("Gagal mengambil data berita:", err);
-        setIsLoading(false);
-      });
-  }, []);
+  newsService.getNews()
+    .then((data) => {
+      if (data.length > 0) {
+        setNewsData(data);
+      }
+      setIsLoading(false);
+    })
+    .catch((err) => {
+      console.error("Gagal mengambil data berita:", err);
+      setIsLoading(false);
+    });
+}, []);
 
   const headlineNews = useMemo(() => {
     return newsData.find((item) => item.featured) || newsData[0];

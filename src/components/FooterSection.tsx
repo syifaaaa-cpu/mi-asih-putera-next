@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, ArrowRight, CheckCircle2, Globe, Video } from 'lucide-react';
 import { MIAsihPuteraLogo } from './MIAsihPuteraLogo';
-
+import { siteInfoService, SiteInfoData } from '../services/siteInfoService'; // <-- Impor service
 
 interface FooterSectionProps {
   onNavigateSection: (sectionId: string) => void;
@@ -15,6 +15,25 @@ export default function FooterSection({
 }: FooterSectionProps) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  
+  // State untuk menyimpan data dari CMS
+  const [siteData, setSiteData] = useState<SiteInfoData>({
+    Alamat: "",
+    Telp: "",
+    Email: "",
+    Instagram: "",
+    Youtube: ""
+  });
+
+  // Ambil data menggunakan service saat komponen dimuat
+  useEffect(() => {
+    const loadSiteData = async () => {
+      const data = await siteInfoService.getSiteInfo();
+      setSiteData(data);
+    };
+
+    loadSiteData();
+  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +66,7 @@ export default function FooterSection({
             {/* Social Icons */}
             <div className="flex items-center space-x-3 pt-2">
               <a
-                href="https://instagram.com"
+                href={siteData.Instagram || "#"}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
@@ -56,7 +75,7 @@ export default function FooterSection({
                 <Globe className="w-4 h-4" />
               </a>
               <a
-                href="https://youtube.com"
+                href={siteData.Youtube || "#"}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Youtube"
@@ -74,58 +93,37 @@ export default function FooterSection({
             </h4>
             <ul className="space-y-2 text-xs font-worksans text-[#e0e8e3]">
               <li>
-                <button
-                  onClick={() => onNavigateSection('hero')}
-                  className="hover:text-[#fdaa3d] transition-colors cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('hero')} className="hover:text-[#fdaa3d] transition-colors cursor-pointer">
                   Profil MI
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('pillars')}
-                  className="hover:text-[#fdaa3d] transition-colors cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('pillars')} className="hover:text-[#fdaa3d] transition-colors cursor-pointer">
                   Kurikulum
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('programs')}
-                  className="hover:text-[#fdaa3d] transition-colors cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('programs')} className="hover:text-[#fdaa3d] transition-colors cursor-pointer">
                   Program
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('growth')}
-                  className="hover:text-[#fdaa3d] transition-colors cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('growth')} className="hover:text-[#fdaa3d] transition-colors cursor-pointer">
                   Kesiswaan
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('programs')}
-                  className="hover:text-[#fdaa3d] transition-colors cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('programs')} className="hover:text-[#fdaa3d] transition-colors cursor-pointer">
                   Galeri
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('faq')}
-                  className="hover:text-[#fdaa3d] transition-colors cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('faq')} className="hover:text-[#fdaa3d] transition-colors cursor-pointer">
                   Informasi
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('footer')}
-                  className="hover:text-[#fdaa3d] transition-colors cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('footer')} className="hover:text-[#fdaa3d] transition-colors cursor-pointer">
                   Hubungi
                 </button>
               </li>
@@ -139,42 +137,27 @@ export default function FooterSection({
             </h4>
             <ul className="space-y-2 text-xs font-worksans text-[#e0e8e3]">
               <li>
-                <button
-                  onClick={() => onNavigateSection('programs')}
-                  className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('programs')} className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer">
                   Tahfiz & Adab Harian
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('programs')}
-                  className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('programs')} className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer">
                   Project-Based Learning
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('programs')}
-                  className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('programs')} className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer">
                   Babakti ka Sepuh
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('programs')}
-                  className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('programs')} className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer">
                   City Survival & Life Skills
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateSection('programs')}
-                  className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer"
-                >
+                <button onClick={() => onNavigateSection('programs')} className="hover:text-[#fdaa3d] transition-colors text-left cursor-pointer">
                   Outdoor Learning
                 </button>
               </li>
@@ -188,22 +171,23 @@ export default function FooterSection({
             </h4>
             
             <div className="space-y-2 text-xs font-worksans text-[#e0e8e3]">
+              {/* Dinamis Alamat */}
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#fdaa3d] shrink-0 mt-0.5" />
-                <span>
-                  Jl. P. Cibebat No. 33, Kec. Cimahi Utara, Kota Cimahi, Jawa Barat 40513
-                </span>
+                <span>{siteData.Alamat}</span>
               </div>
+              {/* Dinamis Telepon */}
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#fdaa3d] shrink-0" />
-                <a href="tel:02212345678" className="hover:text-[#fdaa3d] transition-colors">
-                  (022) 1234 5678
+                <a href={`tel:${siteData.Telp}`} className="hover:text-[#fdaa3d] transition-colors">
+                  {siteData.Telp}
                 </a>
               </div>
+              {/* Dinamis Email */}
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#fdaa3d] shrink-0" />
-                <a href="mailto:info@asihputera.sch.id" className="hover:text-[#fdaa3d] transition-colors">
-                  info@asihputera.sch.id
+                <a href={`mailto:${siteData.Email}`} className="hover:text-[#fdaa3d] transition-colors">
+                  {siteData.Email}
                 </a>
               </div>
             </div>
