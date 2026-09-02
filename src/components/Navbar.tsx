@@ -33,7 +33,7 @@ export default function Navbar({
 
   return (
     <header className="sticky top-0 z-40 bg-[#fcf9f2]/95 backdrop-blur-md border-b border-[#e8e4dc] transition-all">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand / Logo */}
         <div 
           onClick={() => handleNav('hero')}

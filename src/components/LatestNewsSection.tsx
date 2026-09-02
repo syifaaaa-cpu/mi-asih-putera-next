@@ -15,6 +15,7 @@ import {
   Newspaper,
   ChevronRight,
   UserCheck,
+  Pin,
 } from "lucide-react";
 import { LATEST_NEWS_DATA as FALLBACK_NEWS_DATA } from "../data";
 import { NewsItem } from "../types";
@@ -28,18 +29,19 @@ export const LatestNewsSection: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
-    // Menggunakan axios.post karena method sebelumnya adalah POST
-    axios.post("/api/news")
+    // Memanggil API route proxy Next.js (/api/news)
+    axios.get("/api/news")
       .then((res) => {
         const response = res.data;
         const rawData =
           response.Data?.Content || response.data || (Array.isArray(response) ? response : []);
 
         if (rawData.length > 0) {
+          const baseApiUrl =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:7000";
+
           const mappedNews: NewsItem[] = rawData.map(
             (item: any, index: number) => {
-              const baseApiUrl =
-                process.env.NEXT_PUBLIC_API_URL || "http://localhost:7000";
               const imgName = item.SignedThumbnail || item.Thumbnail;
               
               let finalImage = "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800";
@@ -54,26 +56,47 @@ export const LatestNewsSection: React.FC = () => {
 
               const cleanContent = item.Content ? item.Content.replace(/<[^>]*>?/gm, "") : "Ringkasan berita tidak tersedia.";
 
+              // Mendeteksi status pin/featured dari database (mendukung berbagai variasi penamaan kolom backend)
+              const isPinned = Boolean(
+                item.IsPin === true || 
+                item.IsPin === 1 || 
+                item.Pin === true || 
+                item.Pin === 1 ||
+                item.IsFeatured === true ||
+                item.IsFeatured === 1 ||
+                item.StatusPin === true ||
+                item.StatusPin === 1
+              );
+
               return {
-                id: item.ContentId || index + 1,
-                title: item.Title || "Tanpa Judul",
-                category: item.Category || "Berita",
-                date: item.TglPublish
-                  ? new Date(item.TglPublish).toLocaleDateString("id-ID", {
+                id: item.ContentId || item.id || index + 1,
+                title: item.Title || item.title || "Tanpa Judul",
+                category: item.Category || item.category || "Berita",
+                date: item.TglPublish || item.date
+                  ? new Date(item.TglPublish || item.date).toLocaleDateString("id-ID", {
                       day: "numeric",
                       month: "short",
                       year: "numeric",
                     })
                   : "01 Sep 2026",
-                author: item.Author || "Admin",
+                author: item.Author || item.author || "Admin",
                 readTime: "3 menit baca",
                 image: finalImage,
                 summary: cleanContent,
                 fullContent: [cleanContent],
-                featured: index === 0,
+                // Berita akan otomatis jadi utama (featured) jika di-pin oleh sistem, atau menjadi urutan pertama jika belum ada yang di-pin
+                featured: isPinned,
               };
             },
           );
+
+          // Urutkan: Letakkan berita yang statusnya featured/pinned di posisi paling atas (index 0)
+          mappedNews.sort((a: any, b: any) => (b.featured === true ? 1 : 0) - (a.featured === true ? 1 : 0));
+
+          // Jika tidak satupun yang di-pin, jadikan item pertama sebagai default featured
+          if (!mappedNews.some(item => item.featured) && mappedNews.length > 0) {
+            mappedNews[0].featured = true;
+          }
 
           setNewsData(mappedNews);
         }
@@ -121,7 +144,7 @@ export const LatestNewsSection: React.FC = () => {
       <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#c87a1e]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-[#0a3622]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12 pb-6 border-b border-[#e5dfd3]">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0a3622]/8 border border-[#c87a1e]/25 text-[#0a3622] text-xs font-semibold uppercase tracking-wider mb-3">
@@ -154,24 +177,24 @@ export const LatestNewsSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Layout Grid: Kolom Kiri Headline & Kolom Kanan List Berita Pendukung */}
+        {/* Layout Grid Berita Utama & Pendukung */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-8 items-start">
-          {/* 1. LEFT: Berita Utama (Featured Headline) - 7 Kolom */}
+          {/* Kolom Kiri: Headline / Berita Ter-pin */}
           <div className="lg:col-span-7 flex flex-col">
             <article className="group bg-white rounded-2xl overflow-hidden border border-[#e2dcd0] shadow-md hover:shadow-xl transition-all duration-300 flex flex-col">
-              <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-[#001f11]/10">
+              <div className="relative aspect-16/10 sm:aspect-video w-full overflow-hidden bg-[#001f11]/10">
                 <img
                   src={headlineNews.image}
                   alt={headlineNews.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 
                 <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-manrope font-extrabold tracking-wide bg-[#c87a1e] text-white shadow-lg">
-                    <Sparkles className="w-3 h-3" />
-                    BERITA UTAMA
+                    <Pin className="w-3 h-3 fill-white" />
+                    BERITA UTAMA (PIN)
                   </span>
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-manrope font-bold tracking-wide bg-[#0a3622]/90 backdrop-blur-md text-[#fdaa3d] border border-[#fdaa3d]/30 shadow-md">
                     {headlineNews.category}
@@ -222,7 +245,6 @@ export const LatestNewsSection: React.FC = () => {
                   <button
                     onClick={() => setSelectedNews(headlineNews)}
                     className="w-10 h-10 rounded-xl bg-[#fbf7ee] border border-[#e5dfd3] flex items-center justify-center text-[#c87a1e] group-hover:bg-[#0a3622] group-hover:text-[#fdaa3d] group-hover:border-[#0a3622] transition-all cursor-pointer"
-                    title="Baca Selengkapnya"
                   >
                     <BookOpen className="w-4 h-4" />
                   </button>
@@ -231,16 +253,14 @@ export const LatestNewsSection: React.FC = () => {
             </article>
           </div>
 
-          {/* 2. RIGHT: Berita & Agenda Lainnya (Supporting News Stacked Cards) - 5 Kolom */}
+          {/* Kolom Kanan: Berita Pendukung */}
           <div className="lg:col-span-5 flex flex-col gap-3.5">
             <div className="flex items-center justify-between pb-0.5">
               <span className="font-manrope font-bold text-sm sm:text-base text-[#001f11] flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#c87a1e]" />
                 Berita & Agenda Lainnya
               </span>
-              <span className="text-xs text-[#717972] font-manrope">
-                Terbaru
-              </span>
+              <span className="text-xs text-[#717972] font-manrope">Terbaru</span>
             </div>
 
             <div className="flex flex-col gap-3.5">
@@ -297,7 +317,7 @@ export const LatestNewsSection: React.FC = () => {
       {selectedNews && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[#e8e4dc] animate-in zoom-in-95 my-8">
-            <div className="relative aspect-[16/9] w-full bg-[#001f11]/10">
+            <div className="relative aspect-video w-full bg-[#001f11]/10">
               <img
                 src={selectedNews.image}
                 alt={selectedNews.title}
@@ -306,7 +326,7 @@ export const LatestNewsSection: React.FC = () => {
               />
               <button
                 onClick={() => setSelectedNews(null)}
-                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-colors cursor-pointer z-10"
+                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/65 hover:bg-black text-white flex items-center justify-center transition-colors cursor-pointer z-10"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -345,7 +365,7 @@ export const LatestNewsSection: React.FC = () => {
               <div className="mt-8 pt-5 border-t border-[#f0ece1] flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-xs text-[#717972]">
                   <Share2 className="w-4 h-4 text-[#c87a1e]" />
-                  <span>Bagikan informasi kegiatan ini ke grup parenting</span>
+                  <span>Bagikan informasi kegiatan ini</span>
                 </div>
 
                 <button
@@ -457,7 +477,7 @@ export const LatestNewsSection: React.FC = () => {
                       onClick={() => setSelectedNews(news)}
                       className="group bg-white rounded-2xl overflow-hidden border border-[#e5dfd3] hover:border-[#0a3622] shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer"
                     >
-                      <div className="relative aspect-[16/10] overflow-hidden bg-[#001f11]/10">
+                      <div className="relative aspect-16/10 overflow-hidden bg-[#001f11]/10">
                         <img
                           src={news.image}
                           alt={news.title}

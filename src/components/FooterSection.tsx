@@ -28,7 +28,7 @@ export default function FooterSection({
 
   return (
     <footer id="footer" className="bg-[#001f11] text-[#e0e8e3] bg-dark-lattice pt-16 pb-8 border-t border-[#0a3622]">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* 4 Main Footer Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-14 border-b border-[#0a3622]">

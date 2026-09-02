@@ -18,7 +18,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenConsultation }) => {
             <Mail size={14} className="text-[#d9822b]" />
             <span>info@miasihputera.sch.id</span>
           </div>
-          <div className="flex items-center gap-1.5 hidden md:flex">
+          <div className="hidden md:flex items-center gap-1.5">
             <Clock size={14} className="text-[#d9822b]" />
             <span>Senin - Jumat: 07:15 - 14:30 WIB</span>
           </div>

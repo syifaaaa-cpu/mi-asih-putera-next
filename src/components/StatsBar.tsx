@@ -22,7 +22,7 @@ export const StatsBar: React.FC = () => {
 
   return (
     <section className="bg-[#fbf7ee] bg-islamic-stars border-y border-[#e8e4dc] py-9 sm:py-10 relative overflow-hidden">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8 divide-y md:divide-y-0 lg:divide-x divide-[#e2dad0]/70">
           {STATS_DATA.map((item, index) => (
             <div

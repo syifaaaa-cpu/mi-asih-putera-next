@@ -29,7 +29,7 @@ export const StudentGrowthSection: React.FC<StudentGrowthSectionProps> = ({
 
   return (
     <section id="growth" className="py-12 sm:py-16 bg-[#fcf9f2]">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Card: Cerita Pertumbuhan Siswa Kami (Dark Green with Student Image) */}
@@ -96,7 +96,7 @@ export const StudentGrowthSection: React.FC<StudentGrowthSectionProps> = ({
                       <div className="w-9 h-9 rounded-full bg-[#fcf9f2] border border-[#dcdad3] flex items-center justify-center text-[#0a3622] mb-1.5 group-hover:bg-[#0a3622] group-hover:text-white transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className="text-[10px] font-manrope font-semibold text-[#414943] leading-tight max-w-[55px]">
+                      <span className="text-[10px] font-manrope font-semibold text-[#414943] leading-tight max-w-13.75">
                         {step.label}
                       </span>
                     </div>

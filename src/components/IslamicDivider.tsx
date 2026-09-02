@@ -1,30 +1,34 @@
-import React from 'react';
+import React from "react";
 
 interface IslamicDividerProps {
   className?: string;
-  variant?: 'gold' | 'green' | 'dark';
+  variant?: "gold" | "green" | "dark";
 }
 
 export const IslamicDivider: React.FC<IslamicDividerProps> = ({
-  className = '',
-  variant = 'gold',
+  className = "",
+  variant = "gold",
 }) => {
-  const isDark = variant === 'dark';
-  const isGreen = variant === 'green';
+  const isDark = variant === "dark";
+  const isGreen = variant === "green";
 
   const lineColor = isDark
-    ? 'from-transparent via-[#fdaa3d]/25 to-transparent'
+    ? "from-transparent via-[#fdaa3d]/25 to-transparent"
     : isGreen
-    ? 'from-transparent via-[#0a3622]/20 to-transparent'
-    : 'from-transparent via-[#c87a1e]/30 to-transparent';
+      ? "from-transparent via-[#0a3622]/20 to-transparent"
+      : "from-transparent via-[#c87a1e]/30 to-transparent";
 
-  const starFill = isDark ? '#fdaa3d' : isGreen ? '#0a3622' : '#c87a1e';
-  const innerFill = isDark ? '#001f11' : '#fcf9f2';
+  const starFill = isDark ? "#fdaa3d" : isGreen ? "#0a3622" : "#c87a1e";
+  const innerFill = isDark ? "#001f11" : "#fcf9f2";
 
   return (
-    <div className={`w-full flex items-center justify-center my-6 sm:my-8 px-4 select-none pointer-events-none ${className}`}>
+    <div
+      className={`w-full flex items-center justify-center my-6 sm:my-8 px-4 select-none pointer-events-none ${className}`}
+    >
       {/* Left Hairline Gradient Line */}
-      <div className={`flex-1 h-[1px] bg-gradient-to-r ${lineColor} max-w-xs sm:max-w-md`} />
+      <div
+        className={`flex-1 h-px bg-linear-to-r ${lineColor} max-w-xs sm:max-w-md`}
+      />
 
       {/* Center Rub el Hizb (8-Pointed Islamic Star) & Arabesque Flourish */}
       <div className="mx-3 sm:mx-4 flex items-center gap-1.5 shrink-0 opacity-70">
@@ -62,7 +66,9 @@ export const IslamicDivider: React.FC<IslamicDividerProps> = ({
       </div>
 
       {/* Right Hairline Gradient Line */}
-      <div className={`flex-1 h-[1px] bg-gradient-to-r ${lineColor} max-w-xs sm:max-w-md`} />
+      <div
+        className={`flex-1 h-px bg-linear-to-r ${lineColor} max-w-xs sm:max-w-md`}
+      />
     </div>
   );
 };

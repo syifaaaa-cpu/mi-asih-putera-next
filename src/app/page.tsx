@@ -29,6 +29,34 @@ export default function Home() {
     }
   };
 
+  const handleOpenVisit = () => {
+    // Handle visit modal
+  };
+
+  const handleOpenConsultation = () => {
+    // Handle consultation modal
+  };
+
+  const handleOpenPPDB = () => {
+    // Handle PPDB modal
+  };
+
+  const handleViewAllPrograms = () => {
+    handleNavigateSection("programs");
+  };
+
+  const handleOpenAllTestimonials = () => {
+    // Handle all testimonials modal
+  };
+
+  const handleOpenAllFaqs = () => {
+    // Handle all FAQs modal
+  };
+
+  const handleOpenPrivacy = () => {
+    // Handle privacy modal
+  };
+
   return (
     <main className="min-h-screen bg-white">
       <TopBar />
@@ -36,15 +64,15 @@ export default function Home() {
       <Navbar onNavigateSection={handleNavigateSection} />
       
       {/* Pastikan setiap section punya ID yang sesuai */}
-      <div id="hero"><HeroSection /></div>
+      <div id="hero"><HeroSection onOpenVisit={handleOpenVisit} onOpenConsultation={handleOpenConsultation} onOpenPPDB={handleOpenPPDB} /></div>
       <StatsBar />
-      <div id="programs"><FeaturedProgramsSection /></div>
+      <div id="programs"><FeaturedProgramsSection onViewAllPrograms={handleViewAllPrograms} /></div>
       <div id="pillars"><SixPillarsSection /></div>
       <div id="outcomes"><KeyOutcomesSection /></div>
-      <div id="growth"><StudentGrowthSection /></div>
+      <div id="growth"><StudentGrowthSection onOpenStories={handleOpenVisit} onOpenConsultation={handleOpenConsultation} /></div>
       <div id="berita"><LatestNewsSection /></div>
-      <div id="faq"><TestimonialsAndFaqSection /></div>
-      <div id="footer"><FooterSection /></div>
+      <div id="faq"><TestimonialsAndFaqSection onOpenAllTestimonials={handleOpenAllTestimonials} onOpenAllFaqs={handleOpenAllFaqs} /></div>
+      <div id="footer"><FooterSection onNavigateSection={handleNavigateSection} onOpenPrivacy={handleOpenPrivacy} /></div>
     </main>
   );
 }

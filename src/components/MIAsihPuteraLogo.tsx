@@ -14,7 +14,7 @@ export const MIAsihPuteraLogo: React.FC<MIAsihPuteraLogoProps> = ({
      <img 
   src="/images/logo-baru.png" 
   alt="Logo MI Asih Putera" 
-  className="h-9 sm:h-11 w-auto max-w-[200px] sm:max-w-[240px] object-contain" // Tambahkan max-w-... di sini
+  className="h-9 sm:h-11 w-auto max-w-50 sm:max-w-60 object-contain" // Tambahkan max-w-... di sini
 />
     </div>
   );

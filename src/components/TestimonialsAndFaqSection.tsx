@@ -18,7 +18,7 @@ export const TestimonialsAndFaqSection: React.FC<TestimonialsAndFaqSectionProps>
 
   return (
     <section id="testimonials" className="py-16 sm:py-20 bg-islamic-arabesque relative">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Card: Suara Orang Tua */}

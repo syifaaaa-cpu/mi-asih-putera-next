@@ -20,7 +20,7 @@ export const KeyOutcomesSection: React.FC = () => {
 
   return (
     <section id="outcomes" className="py-16 sm:py-20 bg-islamic-girih relative">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-12">
@@ -34,7 +34,7 @@ export const KeyOutcomesSection: React.FC = () => {
           {OUTCOMES_DATA.map((outcome, index) => (
             <div
               key={outcome.id}
-              className="group relative overflow-hidden rounded-2xl min-h-[380px] flex flex-col justify-between p-6 sm:p-7 shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 border border-[#001f11]/10"
+              className="group relative overflow-hidden rounded-2xl min-h-96 flex flex-col justify-between p-6 sm:p-7 shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 border border-[#001f11]/10"
             >
               {/* Dynamic Thematic Background Image */}
               {outcome.image && (
@@ -48,7 +48,7 @@ export const KeyOutcomesSection: React.FC = () => {
 
               {/* Multi-layered Dark Gradient Overlay for Maximum Readability */}
               <div 
-                className="absolute inset-0 bg-gradient-to-t from-[#00170c]/98 via-[#001f11]/85 to-[#00170c]/55 group-hover:from-[#00170c]/95 group-hover:via-[#001f11]/75 transition-colors duration-500 z-1" 
+                className="absolute inset-0 bg-linear-to-t from-[#00170c]/98 via-[#001f11]/85 to-[#00170c]/55 group-hover:from-[#00170c]/95 group-hover:via-[#001f11]/75 transition-colors duration-500 z-1" 
               />
               
               {/* Subtle Decorative Geometric Pattern Tint on Hover */}
@@ -86,7 +86,7 @@ export const KeyOutcomesSection: React.FC = () => {
                 {/* Bottom decorative golden indicator line */}
                 <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-xs text-white/70 font-medium">
                   <span className="group-hover:text-white transition-colors">Pendidikan Holistik</span>
-                  <div className="w-6 h-[2px] bg-[#fdaa3d] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  <div className="w-6 h-0.5 bg-[#fdaa3d] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </div>
               </div>
             </div>

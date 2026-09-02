@@ -9,7 +9,7 @@ interface SixPillarsSectionProps {
 export const SixPillarsSection: React.FC<SixPillarsSectionProps> = ({ onSelectPillar }) => {
   return (
     <section id="pillars" className="py-16 sm:py-20 bg-islamic-arabesque relative">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-14">
@@ -28,7 +28,7 @@ export const SixPillarsSection: React.FC<SixPillarsSectionProps> = ({ onSelectPi
                 className="bg-white rounded-2xl overflow-hidden border border-[#e8e4dc] shadow-xs hover:shadow-md transition-all duration-300 flex flex-col group"
               >
                 {/* Image Container with Badge */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#f0eee7]">
+                <div className="relative aspect-16/10 w-full overflow-hidden bg-[#f0eee7]">
                   <img
                     src={pillar.image}
                     alt={pillar.title}

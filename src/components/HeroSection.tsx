@@ -29,12 +29,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       />
 
       {/* 3. Delicate Radial Ambient Glows for Warmth & Depth */}
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#fdaa3d]/10 rounded-full blur-3xl pointer-events-none z-0" />
-      <div className="absolute bottom-0 left-10 w-[450px] h-[450px] bg-[#0a3622]/8 rounded-full blur-3xl pointer-events-none z-0" />
-      <div className="absolute top-1/2 left-1/3 w-[350px] h-[350px] bg-[#c87a1e]/8 rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute top-0 right-1/4 w-125 h-125 bg-[#fdaa3d]/10 rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-0 left-10 w-112.5 h-112.5 bg-[#0a3622]/8 rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute top-1/2 left-1/3 w-87.5 h-87.5 bg-[#c87a1e]/8 rounded-full blur-3xl pointer-events-none z-0" />
 
       {/* 4. Top Elaborate Islamic Ornamental Border Ribbon */}
-      <div className="absolute top-0 inset-x-0 h-3 bg-gradient-to-r from-[#001f11] via-[#c87a1e] to-[#001f11] opacity-85 z-10 flex items-center justify-center overflow-hidden pointer-events-none">
+      <div className="absolute top-0 inset-x-0 h-3 bg-linear-to-r from-[#001f11] via-[#c87a1e] to-[#001f11] opacity-85 z-10 flex items-center justify-center overflow-hidden pointer-events-none">
         <div className="w-full h-full opacity-40 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:8px_8px]" />
       </div>
 
@@ -95,7 +95,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Main Content Container */}
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* Left Column (Copy & CTAs) */}
@@ -103,14 +103,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             
             {/* Islamic Bismillah Calligraphy & Header Flourish */}
             <div className="flex items-center gap-2.5 select-none pt-1">
-              <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#c87a1e]" />
+              <div className="h-px w-8 bg-linear-to-r from-transparent to-[#c87a1e]" />
               <span 
                 className="text-[#c87a1e] font-serif text-sm sm:text-base tracking-widest opacity-90 font-medium"
                 title="Bismillahir Rahmanir Rahim"
               >
                 بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
               </span>
-              <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#c87a1e]" />
+              <div className="h-px w-8 bg-linear-to-l from-transparent to-[#c87a1e]" />
             </div>
 
             {/* Headline matching exact reference */}
@@ -195,7 +195,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
           {/* Right Column (Hero Photo Collage with Arched Window & Islamic Frame) */}
           <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[480px]">
+            <div className="relative w-full max-w-120">
               
               {/* Decorative Islamic Arch Halo / Outline behind the photo */}
               <div className="absolute -inset-2.5 rounded-t-[148px] rounded-b-3xl border-2 border-dashed border-[#c87a1e]/40 pointer-events-none" />
@@ -208,7 +208,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   className="w-full h-full object-cover object-center"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
               </div>
 
               {/* Floating Badge */}
@@ -233,7 +233,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Bottom Elaborate Islamic Ornamental Border Ribbon */}
-      <div className="absolute bottom-0 inset-x-0 h-2 bg-gradient-to-r from-[#001f11] via-[#c87a1e] to-[#001f11] opacity-75 z-10 pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-2 bg-linear-to-r from-[#001f11] via-[#c87a1e] to-[#001f11] opacity-75 z-10 pointer-events-none" />
     </section>
   );
 };

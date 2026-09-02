@@ -14,7 +14,7 @@ export default function FeaturedProgramsSection({
 }: FeaturedProgramsSectionProps) {
   return (
     <section id="programs" className="py-16 sm:py-20 bg-islamic-girih relative">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-310 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-14">
@@ -32,7 +32,7 @@ export default function FeaturedProgramsSection({
               className="bg-white rounded-xl overflow-hidden border border-[#e8e4dc] shadow-xs hover:shadow-md transition-all duration-300 flex flex-col cursor-pointer group"
             >
               {/* Card Image */}
-              <div className="aspect-[4/3] w-full overflow-hidden bg-[#f0eee7]">
+              <div className="aspect-4/3 w-full overflow-hidden bg-[#f0eee7]">
                 <img
                   src={program.image}
                   alt={program.title}
